@@ -6,6 +6,7 @@ import itertools
 import argparse
 import time
 import logging
+import sys
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # 
@@ -123,7 +124,8 @@ def demultiplex(read1, read2, index1, index2, p5_barcodes, p7_barcodes, out_dir,
 
     # Create count dictionary first
     start = time.time()
-    for i1, i2 in itertools.izip(fq(index1), fq(index2)):
+    zip_func = itertools.izip if sys.version_info[0] < 3 else zip
+    for i1, i2 in zip_func(fq(index1), fq(index2)):
         sample_id = get_seq(i1, i2)
 
         # Increment read count and create output buffers if this is a new sample barcode
@@ -137,7 +139,7 @@ def demultiplex(read1, read2, index1, index2, p5_barcodes, p7_barcodes, out_dir,
     logger.info("Read count complete in %.1f minutes." % ((time.time() - start) / 60))
 
     total_count = 0
-    for r1, r2, i1, i2 in itertools.izip(fq(read1), fq(read2), fq(index1), fq(index2)):
+    for r1, r2, i1, i2 in zip_func(fq(read1), fq(read2), fq(index1), fq(index2)):
         # the original demultiplex stored sequences in a buffer to execute in 1N instead of 2N
         # this version minimizes the memory requirement by running in 2N
         total_count += 1
