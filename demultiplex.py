@@ -6,6 +6,7 @@ import itertools
 import argparse
 import time
 import logging
+import sys
 
 __author__ = 'Martin Aryee'
 
@@ -70,11 +71,11 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
     buffer_r2 = {}
     buffer_i1 = {}
     buffer_i2 = {}
-
+    zip_func = itertools.izip if sys.version_info[0] < 3 else zip
     #it = itertools.izip(fq(args['read1']), fq(args['read2']), fq(args['index1']), fq(args['index2']))
     #for r1,r2,i1,i2 in itertools.islice(it, 0, 100):
     start = time.time()
-    for r1,r2,i1,i2 in itertools.izip(fq(read1), fq(read2), fq(index1), fq(index2)):
+    for r1,r2,i1,i2 in zip_func(fq(read1), fq(read2), fq(index1), fq(index2)):
         total_count += 1
         if total_count % 1000000 == 0:
             logger.info("Processed %d reads in %.1f minutes.", total_count, (time.time()-start)/60)
