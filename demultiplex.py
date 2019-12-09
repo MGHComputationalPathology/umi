@@ -153,7 +153,8 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
     undetermined_i1.close()
     undetermined_i2.close()
 
-    num_fastqs = len([v for k,v in count.iteritems() if v>=min_reads])
+    iter_collection  = count.iteritems() if sys.version_info[0] < 3 else sorted(count.items())
+    num_fastqs = len([v for k,v in iter_collection if v>=min_reads])
     logger.info('Wrote FASTQs for the %d sample barcodes out of %d with at least %d reads.', num_fastqs, len(count), min_reads)
 
 def main():
