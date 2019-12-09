@@ -75,8 +75,8 @@ def add_file_to_dict(fname, d):
 # helper functions
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def get_sample_name(i1,i2,id_array):
-    index1=i1[1][1:8]
-    index2=i2[1][1:8]
+    index1=i1[1][1:8] if sys.version_info[0] < 3 else i1[1].decode()[1:8]
+    index2=i2[1][1:8] if sys.version_info[0] < 3 else i2[1].decode()[1:8]
     dictA=id_array[0]
     dictP=id_array[1]
     Aname=''
