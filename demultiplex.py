@@ -82,7 +82,7 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
         sample_id = get_sample_id(i1, i2, sample_names)
 
         # Increment read count and create output buffers if this is a new sample barcode
-        if not count.has_key(sample_id):
+        if sample_id not in count:
             count[sample_id] = 0
             buffer_r1[sample_id] = []
             buffer_r2[sample_id] = []
