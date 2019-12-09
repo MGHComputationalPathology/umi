@@ -24,6 +24,7 @@ def fq(file):
         fastq = gzip.open(file, 'rb')
     else:
         fastq = open(file, 'r')
+    should_decode = sys.version_info[0] >= 3
     with fastq as f:
         while True:
             l1 = f.readline()
@@ -32,6 +33,11 @@ def fq(file):
             l2 = f.readline()
             l3 = f.readline()
             l4 = f.readline()
+            if should_decode:
+               l1 = l1.decode()
+               l2 = l2.decode()
+               l3 = l3.decode()
+               l4 = l4.decode()
             yield [l1, l2, l3, l4]
 
 
